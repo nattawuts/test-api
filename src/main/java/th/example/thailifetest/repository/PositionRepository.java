@@ -23,7 +23,7 @@ public interface PositionRepository extends JpaRepository<PositionModel, Long> {
 	
 	@Query(value = "SELECT pos.*, dp.dept_name pos_dept_name, ep.epos_start_date, ep.epos_end_date, ep.epos_status "
 			+ "FROM emp_position ep, position pos , department dp "
-			+ "where ep.epos_emp_id = :empId and pos.pos_id = ep.epos_pos_id and dp.dept_id = pos.pos_dept_id ", nativeQuery = true)
+			+ "where ep.epos_emp_id = :empId and pos.pos_id = ep.epos_pos_id and dp.dept_id = pos.pos_dept_id order by ep.epos_status asc, ep.epos_start_date desc", nativeQuery = true)
 	List<PositionModel> findAllByEmpId(@Param("empId") String empId);
 	
 }

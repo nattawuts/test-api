@@ -34,6 +34,18 @@ public class ProfileController {
 	@Autowired
 	IProfileService profileService; 
 	
+	@GetMapping("/install")
+	@ResponseBody
+	public ApiResponse<List<EmployeeModel>> install( @RequestParam  String empName, @RequestParam  String empLastname) {
+		ApiResponse<List<EmployeeModel>> res = new  ApiResponse<List<EmployeeModel>>();
+		if( (empName == null || empName.length() == 0) && (empLastname == null || empLastname.length() == 0)) {
+			res.setData(profileService.searchAllEmployee());
+		}else {
+			res.setData(profileService.searchEmployeeByName(empName, empLastname));
+		}
+		return res;
+	}
+	
 	@GetMapping("/searchEmp")
 	@ResponseBody
 	public ApiResponse<List<EmployeeModel>> searchEmp( @RequestParam  String empName, @RequestParam  String empLastname) {
@@ -149,68 +161,4 @@ public class ProfileController {
 	    out.close();
 	}
 	
-//	@GetMapping("/users/export")
-//    public void exportToCSV(HttpServletResponse response) throws IOException {
-//        response.setContentType("text/csv");
-//        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-//        String currentDateTime = dateFormatter.format(new Date());
-//         
-//        String headerKey = "Content-Disposition";
-//        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
-//        response.setHeader(headerKey, headerValue);
-//         
-//        List<User> listUsers = service.listAll();
-// 
-//        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-//        String[] csvHeader = {"User ID", "E-mail", "Full Name", "Roles", "Enabled"};
-//        String[] nameMapping = {"id", "email", "fullName", "roles", "enabled"};
-//         
-//        csvWriter.writeHeader(csvHeader);
-//         
-//        for (User user : listUsers) {
-//            csvWriter.write(user, nameMapping);
-//        }
-//         
-//        csvWriter.close();
-//         
-//    }
-	
-//	@GetMapping("/users/export")
-//	public ResponseEntity<byte[]> downloadTextFileExample4(@RequestParam  String type) throws IOException {
-//		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-//		String currentDateTime = dateFormatter.format(new Date());
-//		String fileName = currentDateTime + ".txt";
-//		String fileContent = "Simple Solution \nDownload Example 4";
-//			
-//		// Create text file
-//		Path exportedPath = fileExporter.export(fileContent, fileName);
-//			
-//		// Download file with byte[]
-//		byte[] expotedFileData = Files.readAllBytes(exportedPath);
-//		
-//		if(type.toLowerCase().equals("csv")) {
-//			return ResponseEntity.ok()
-//			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
-//			.contentType(MediaType.TEXT_PLAIN)
-//			.contentLength(expotedFileData.length)
-//			.body(expotedFileData);
-//		}
-//			
-//		return ResponseEntity.ok()
-//				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName)
-//				.contentType(MediaType.TEXT_PLAIN)
-//				.contentLength(expotedFileData.length)
-//				.body(expotedFileData);
-//	}
-//	
-//	public Path export(String fileContent, String fileName) {
-//		Path filePath = Paths.
-//		try {
-//			Path exportedFilePath = Files.write(filePath, fileContent.getBytes(), StandardOpenOption.CREATE);
-//			return exportedFilePath;
-//		} catch (IOException e) {
-//			logger.error(e.getMessage(), e);
-//		}	
-//		return null;
-//	}
 }

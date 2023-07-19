@@ -172,9 +172,11 @@ public class ProfileService  implements IProfileService{
 		emp.setEmpUpdateDate(new Date(date.getTime()));
 		employeeRepository.updateEmployee(emp);
 		
-		if(empReq.getEmpStatus() == "Inactive") {
+		if( "Inactive".equals(empReq.getEmpStatus())) {
 			employeePositionRepository.inactiveEmpPos(empReq.getEmpId());
-		}else if( empReq.getEposPosIdOld() != empReq.getEposPosId()) {
+		}else if( !empReq.getEposPosIdOld().equals(empReq.getEposPosId())) {
+			System.out.println(empReq.getEposPosIdOld());
+			System.out.println(empReq.getEposPosId());
 			String empEPosId = genId("T",date);
 			EmployeePositionModel empPos = new EmployeePositionModel();
 			empPos.setEposCreateDate(new Date(date.getTime()));
